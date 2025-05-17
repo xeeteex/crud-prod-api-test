@@ -1,4 +1,5 @@
 import Product from "../models/product.model.js";
+import { validationResult } from "express-validator";
 
 export const getProducts = async (req, res) => {
   try {
@@ -10,6 +11,11 @@ export const getProducts = async (req, res) => {
 };
 
 export const getProduct = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const { id } = req.params;
     console.log(req.params);
@@ -21,6 +27,10 @@ export const getProduct = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const product = await Product.create(req.body);
     res.status(201).json(product);
@@ -30,6 +40,10 @@ export const createProduct = async (req, res) => {
 };
 
 export const updateProduct = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()){
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const { id } = req.params;
     const product = await Product.findByIdAndUpdate(id, req.body);
@@ -46,6 +60,12 @@ export const updateProduct = async (req, res) => {
 };
 
 export const deleteProduct = async (req, res) => {
+  const errors = validationResult(req)
+  if(!errors.isEmpty())
+    {
+
+      return res.status(400).json({errors:errors.array()})
+    } 
   try {
     const { id } = req.params;
     const product = await Product.findByIdAndDelete(id);
