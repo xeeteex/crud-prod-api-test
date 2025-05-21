@@ -1,11 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
-import cors from "cors"
+
 import productRoute from "./routes/product.route.js"
 
 const app = express();
 
-app.use(cors());
 
 app.use(express.json()); // middleware
 
